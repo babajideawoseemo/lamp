@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lamp.applicant.service.ApplicantService;
 import com.lamp.data.entities.Applicant;
+import com.lamp.data.entities.Response;
 
 @RestController
 public class ApplicantController {
@@ -24,7 +25,8 @@ public class ApplicantController {
 	@CrossOrigin
 	@PostMapping("/apply")
 	public Applicant addApplicant(@RequestBody Applicant applicant) {
-		
+			
+		applicantServiceImpl.sendMail(applicant.getEmail(),applicant.getId());
 		applicantServiceImpl.addApplicant(applicant);;
 		
 		return applicant;
@@ -55,11 +57,33 @@ public class ApplicantController {
 	@PutMapping("/updateApplicant/{applicantId}")
 	public Applicant updateApplicant(@PathVariable int applicantId, @RequestBody Applicant applicant) {
 		
-		applicant.setId(applicantId);
+		applicant = applicantServiceImpl.getApplicantById(applicantId);
 		
 		applicantServiceImpl.updateApplicant(applicant);
 		
 		return applicant;
 	}
+	
+	@CrossOrigin
+	@PutMapping("/addResponse/{applicantId}")
+	public Response addResponse(@PathVariable int applicantId, @RequestBody Response response) {
+		
+		Applicant applicant = applicantServiceImpl.getApplicantById(applicantId);
+		
+		applicantServiceImpl.addResponse(response,applicant);
+		
+		return response;
+	}
+	
+	@CrossOrigin
+	@PutMapping("/createPassword/{applicantId}")
+	public Applicant updatePassword(@PathVariable int applicantId, @RequestBody Applicant theApplicant) {
+		
+		applicantServiceImpl.updatePassword(applicantId, theApplicant);
+		
+		return theApplicant;
+		
+	}
+	
 	
 }

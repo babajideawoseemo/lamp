@@ -7,14 +7,18 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lamp.data.entities.Applicant;
+import com.lamp.data.entities.Response;
 
 @Repository
 public class ApplicantDaoImpl implements ApplicantDao {
 
+	@Autowired
+	BCryptPasswordEncoder encoder;
 	@Autowired
 	private SessionFactory sessionFactory;
 	
@@ -71,6 +75,46 @@ public class ApplicantDaoImpl implements ApplicantDao {
 		Query theQuery = currentSession.createQuery("delete from Applicant where id=:applicantId");
 		
 		theQuery.setParameter("applicantId", applicantId);
+	}
+	
+	@Transactional 
+	public void addResponse(Response response,Applicant applicant) {
+	
+	Session currentSession = sessionFactory.getCurrentSession();
+	
+	applicant.setResponse(response);
+	
+	
+	logger.info("Saving response to the database " + response.toString());
+
+	
+	logger.info("Saving applicant to the database " + applicant.toString());
+	currentSession.save(response);
+	
+	updateApplicant(applicant);
+
+	}
+	
+	public String encodePassword(Applicant applicant) {
+		
+		applicant.setPassword(encoder.encode(applicant.getPassword()));
+		return applicant.getPassword();
+	}
+
+	public String getApplicantByEmail(Applicant applicant) {
+		
+		applicant.setEmail(applicant.getEmail());
+		return applicant.getEmail();
+		
+	}
+	
+	@Transactional
+	public void updatePassword(int applicantId, Applicant theApplicant) {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		currentSession.update(theApplicant);
+		
 	}
 
 }

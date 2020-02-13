@@ -1,0 +1,3 @@
+com\lamp\db\DbConnectionManagerTest.class
+com\lamp\data\AppTest.class
+com\lamp\entities\dao\test\ApplicantDaoImplTest.class

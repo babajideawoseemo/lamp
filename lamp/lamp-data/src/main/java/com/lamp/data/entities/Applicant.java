@@ -2,9 +2,13 @@ package com.lamp.data.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -47,12 +51,17 @@ public class Applicant {
 	@Column(name="password")
 	private String password;
 	
+	@OneToOne
+	@JoinColumn(name="response_id")
+	private Response response;
+	
+	@Enumerated(EnumType.STRING)
+	private ApplicantStatus applicantStatus;
+
+	
 	public Applicant() {
 		
 	}
-
-
-
 
 	public Applicant(String username, String firstName, String lastName, String email, String date_of_birth,
 			boolean verified, long phone, String gender, String password) {
@@ -66,6 +75,7 @@ public class Applicant {
 		this.phone = phone;
 		this.gender = gender;
 		this.password = password;
+		
 	}
 
 	public int getId() {
@@ -166,14 +176,32 @@ public class Applicant {
 		this.password = password;
 	}
 
+	public Response getResponse() {
+		return response;
+	}
 
+	public void setResponse(Response response) {
+		this.response = response;
+	}
+
+	public ApplicantStatus getApplicantStatus() {
+		return applicantStatus;
+	}
+
+	public void setApplicantStatus(ApplicantStatus applicantStatus) {
+		this.applicantStatus = applicantStatus;
+	}
 
 	@Override
 	public String toString() {
 		return "Applicant [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", email=" + email + ", date_of_birth=" + date_of_birth + ", verified=" + verified + ", phone="
-				+ phone + ", gender=" + gender + ", password=" + password + "]";
+				+ phone + ", gender=" + gender + ", password=" + password + ", response=" + response + "]";
 	}
+
+
+
+
 
 
 

@@ -1,0 +1,4 @@
+com\lamp\data\App.class
+com\lamp\data\entities\dao\ApplicantDao.class
+com\lamp\data\entities\dao\ApplicantDaoImpl.class
+com\lamp\data\entities\Applicant.class
